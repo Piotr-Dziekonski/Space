@@ -1,8 +1,5 @@
-import com.sun.javafx.geom.Vec2d;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
 
 public class Ship{
     private int height;
@@ -12,7 +9,7 @@ public class Ship{
 
     private double angle;
 
-    private Vec2d velocity;
+    private int velX, velY;
     private double acceleration;
     private double movement_speed;
     private double accel_modifier;
@@ -22,7 +19,8 @@ public class Ship{
 
     public Ship(int width, int height, Color color, Point location)
     {
-        this.velocity = new Vec2d(0,0);
+        this.velX = 0;
+        this.velY = 0;
         this.angle = 0;
         this.location = location;
         this.acceleration = 0;
@@ -48,16 +46,16 @@ public class Ship{
 
     }
     public void tick(){
-        location.x += velocity.x;
-        location.y += velocity.y;
+        location.x += velX;
+        location.y += velY;
     }
     public void move(KeyEvent e){
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {
-            velocity.y = -1;
+            velY = -1;
         }
         if (key == KeyEvent.VK_DOWN) {
-            velocity.y = 1;
+            velY = 1;
         }
 
 
@@ -77,10 +75,10 @@ public class Ship{
     public void brake(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {
-            velocity.y = 0;
+            velY = 0;
         }
         if (key == KeyEvent.VK_DOWN) {
-            velocity.y = 0;
+            velY = 0;
         }
 
 

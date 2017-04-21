@@ -38,5 +38,6 @@ public class Space extends JPanel implements KeyListener{
     }
     public void tick(){
         player.tick();
+        this.repaint();
     }
 }
