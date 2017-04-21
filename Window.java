@@ -2,10 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 public class Window extends JFrame {
     Space space = new Space();
-
 
 
 
@@ -17,12 +17,10 @@ public class Window extends JFrame {
         setVisible(true);
 
 
-
-
     }
 
     public static void main(String[] args) {
-        new Window();
+        JFrame window = new Window();
 
     }
 

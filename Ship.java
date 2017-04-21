@@ -1,46 +1,59 @@
 import java.awt.*;
+import java.awt.event.*;
 
-public class Ship {
-    protected int height;
-    protected int width;
-    protected Color color;
-    protected int acceleration = 0;
-    protected int movement_speed = 20;
-    protected int accel_modifier = 2;
-    protected int deceleration_multiplier = 1;
-    Point location;
+public class Ship{
+    private int height;
+    private int width;
+    private Color color;
+    private Point location;
 
-    public Ship(int pos_x, int pos_y, int width, int height, Color color)
+    private double acceleration;
+    private double movement_speed;
+    private double accel_modifier;
+    private double deceleration_multiplier;
+
+
+
+    public Ship(int width, int height, Color color, Point location)
     {
-
-        this.location = new Point(pos_x, pos_y);
+        this.location = location;
+        this.acceleration = 0;
+        this.movement_speed = 20;
+        this.accel_modifier = 0.5;
+        this.deceleration_multiplier = 1;
         this.height = height;
         this.width= width;
         this.color= color;
-
-
     }
 
     public void paint(Graphics g)
     {
         g.setColor(color);
-        Point point2 = new Point(location.x+width,location.y);
-        Point point3 = new Point(location.x+(width/2),location.y - height);
-        g.drawLine(location.x,location.y,point2.x,point2.y);
-        g.drawLine(location.x,location.y,point3.x,point3.y);
+        Point point2 = new Point(this.location.x+width,this.location.y);
+        Point point3 = new Point(this.location.x+(width/2),this.location.y - height);
+        g.drawLine(this.location.x,this.location.y,point2.x,point2.y);
+        g.drawLine(this.location.x,this.location.y,point3.x,point3.y);
         g.drawLine(point2.x,point2.y,point3.x,point3.y);
 
     }
-    public void move(int horizontal, int vertical, int speed){
-        movement_speed = speed;
-        if(horizontal>0){
-            location.x+=speed;
-        }
-        else if(horizontal<0){
-            location.x-=speed;
-        }
-        else{
+    public void move(KeyEvent e){
+        int key = e.getKeyCode();
 
+        if (key == KeyEvent.VK_LEFT) {
+            location.x -= 1;
+
+        }
+
+        if (key == KeyEvent.VK_RIGHT) {
+            location.x += 1;
+        }
+
+        if (key == KeyEvent.VK_UP) {
+            location.y -= 1;
+        }
+
+        if (key == KeyEvent.VK_DOWN) {
+            location.y += 1;
         }
 
     }

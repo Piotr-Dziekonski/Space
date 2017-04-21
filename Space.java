@@ -1,13 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Space extends JPanel implements KeyListener {
+public class Space extends JPanel implements KeyListener{
     Ship player;
-    Point pt = new Point(300,300);
 
     public Space(){
-        player = new Ship(100,200,100,200,Color.red);
+        player = new Ship(20,40,Color.red,new Point(300,300));
         this.setFocusable(true);
         this.requestFocus();
         this.addKeyListener(this);
@@ -15,7 +15,6 @@ public class Space extends JPanel implements KeyListener {
 
     @Override
     protected void paintComponent(Graphics g) {
-        // TODO Auto-generated method stub
         super.paintComponent(g);
         player.paint(g);
     }
@@ -27,27 +26,12 @@ public class Space extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()){
-            case KeyEvent.VK_LEFT:
-                player.move(-1,0, 20);
-                this.repaint();
-
-                System.err.println(player.location.getX());
-                break;
-            case KeyEvent.VK_RIGHT:
-                player.move(1,0, 20);
-                this.repaint();
-
-                System.err.println(player.location.getX());
-                break;
-        }
-
-
+        player.move(e);
+        this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
-
 }
