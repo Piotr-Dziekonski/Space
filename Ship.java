@@ -5,6 +5,15 @@ public class Ship {
     protected int width;
     protected Color color;
 
+    public Ship(int width, int height, Color color)
+    {
+        this.height = height;
+        this.width= width;
+        this.color= color;
+
+
+    }
+
     public void paint(Graphics g, Point location)
     {
         g.setColor(color);
