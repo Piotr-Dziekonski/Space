@@ -7,7 +7,7 @@ public class Space extends JPanel implements KeyListener{
     Ship player;
 
     public Space(){
-        player = new Ship(20,40,Color.red,new Point(300,300));
+        player = new Ship(40,40,Color.red,new Point(400,300));
         this.setFocusable(true);
         this.requestFocus();
         this.addKeyListener(this);
@@ -27,11 +27,16 @@ public class Space extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         player.move(e);
+        player.rotate(e);
         this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        player.brake(e);
+        this.repaint();
+    }
+    public void tick(){
+        player.tick();
     }
 }
