@@ -8,12 +8,15 @@ public class Window extends JFrame {
 
 
 
+
     public Window() {
         super("Space");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setContentPane(space);
         setVisible(true);
+
+
 
 
     }
