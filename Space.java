@@ -27,7 +27,7 @@ public class Space extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         player.move(e);
-        player.rotate(e);
+        player.rotate(e); // sets player.isRotatingLeft or player.isRotatingRight to true depending on which button is pressed and then player.tick() makes it change its angle (player.angle)
         this.repaint();
     }
 

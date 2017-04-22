@@ -14,11 +14,14 @@ public class Ship{
     private double movement_speed;
     private double accel_modifier;
     private double deceleration_multiplier;
-
+    private boolean isRotatingLeft;
+    private boolean isRotatingRight;
 
 
     public Ship(int width, int height, Color color, Point location)
     {
+        this.isRotatingLeft = false;
+        this.isRotatingRight = false;
         this.velX = 0;
         this.velY = 0;
         this.angle = 0;
@@ -40,14 +43,29 @@ public class Ship{
         int xsum = (this.location.x + this.location.x + width + this.location.x + (width/2))/3;
         int ysum = (this.location.y + this.location.y + this.location.y - height)/3;
         Polygon triangle = new Polygon(xPoly, yPoly, xPoly.length);
-        g2d.rotate(Math.toRadians(angle),xsum,ysum);
+        g2d.rotate(angle,xsum,ysum);
         g2d.setColor(color);
         g2d.drawPolygon(triangle);
 
     }
     public void tick(){
-        location.x += velX;
+        location.x += velX; // we need to make it move in the direction it is pointing.
         location.y += velY;
+        if(isRotatingLeft)
+        {
+            angle -= Math.toRadians(5);
+            if (angle <= Math.toRadians(-360)){
+                angle = 0;
+            }
+        }
+        else if (isRotatingRight){
+            angle += Math.toRadians(5);
+            if (angle >= Math.toRadians(358)){
+                angle = 0;
+            }
+        }
+        System.out.println("Angle: " + Math.toDegrees(angle));
+
     }
     public void move(KeyEvent e){
         int key = e.getKeyCode();
@@ -63,13 +81,12 @@ public class Ship{
     public void rotate(KeyEvent e){
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_LEFT) {
-            angle += Math.toRadians(-180);
-
+            isRotatingLeft = true;
         }
-
         if (key == KeyEvent.VK_RIGHT) {
-            angle += Math.toRadians(180);
+            isRotatingRight = true;
         }
+
     }
 
     public void brake(KeyEvent e) {
@@ -80,7 +97,11 @@ public class Ship{
         if (key == KeyEvent.VK_DOWN) {
             velY = 0;
         }
-
-
+        if (key == KeyEvent.VK_LEFT) {
+            isRotatingLeft = false;
+        }
+        if (key == KeyEvent.VK_RIGHT) {
+            isRotatingRight = false;
+        }
     }
 }
