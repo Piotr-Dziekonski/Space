@@ -7,7 +7,7 @@ public class Ship{
     private int height;
     private int width;
     private Color color;
-    private Point2D location;
+    private Point2D.Double location;
 
     private double angle;
 
@@ -22,7 +22,7 @@ public class Ship{
     private boolean isThrusting;
 
 
-    public Ship(int width, int height, Color color, Point location)
+    public Ship(int width, int height, Color color, Point _location)
     {
         this.isRotatingLeft = false;
         this.isRotatingRight = false;
@@ -30,7 +30,7 @@ public class Ship{
         this.velX = 0;
         this.velY = 0;
         this.angle = 0;
-        this.location = location;
+        this.location = new Point2D.Double(_location.x,_location.y);
         this.acceleration = 0;
         this.movement_speed = 10;
         this.accel_modifier = 0.5;
@@ -80,16 +80,19 @@ public class Ship{
             velY = (Math.cos(angle) * movement_speed)*(-1);
             velX = Math.sin(angle) * movement_speed;
         }
+        else {//braking
+            velX *= 0.97;
+            velY *= 0.97;
+        }
 
         location.setLocation(location.getX() + velX, location.getY() + velY);
 
-        //braking
 
-        velX *= 0.97;
-        velY *= 0.97;
+
+
 
         //System.out.println("Velocity: " + velX + " " + velY);
-        //System.out.println("Angle: " + Math.toDegrees(angle));
+        System.out.println("Angle: " + Math.toDegrees(angle) + " " + angle);
 
     }
     public void move(KeyEvent e){
