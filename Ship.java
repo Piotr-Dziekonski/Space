@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
@@ -41,9 +42,12 @@ public class Ship extends GameObject{
         }
         path.closePath();
 
-        g2d.rotate(getAngle(),xsum,ysum);
-        g2d.setColor(color);
-        g2d.draw(path);
+        double rotateAnchorX = (this.location.getX() + this.location.getX() + width + this.location.getX() + (width/2))/3;
+        double rotateAnchorY = (this.location.getY() + this.location.getY() + this.location.getY() - height)/3;
+        AffineTransform at = AffineTransform.getRotateInstance(this.angle, rotateAnchorX, rotateAnchorY);       ////    This line create a rotation which is then used in creating
+        Shape shape = path.createTransformedShape(at);                                                          ////    an already rotated actual shape in this line
+        g2d.setColor(this.color);
+        g2d.draw(shape);                                                                                        ////    and then drawn here.
 
     }
 
