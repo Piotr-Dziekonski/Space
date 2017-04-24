@@ -14,14 +14,17 @@ public class Ship{
     private double movement_speed;
     private double accel_modifier;
     private double deceleration_multiplier;
+    private double angle_modifier;
     private boolean isRotatingLeft;
     private boolean isRotatingRight;
+    private boolean isThrusting;
 
 
     public Ship(int width, int height, Color color, Point location)
     {
         this.isRotatingLeft = false;
         this.isRotatingRight = false;
+        this.isThrusting = false;
         this.velX = 0;
         this.velY = 0;
         this.angle = 0;
@@ -33,6 +36,7 @@ public class Ship{
         this.height = height;
         this.width= width;
         this.color= color;
+        this.angle_modifier = 5;
     }
 
     public void paint(Graphics g)
@@ -49,31 +53,41 @@ public class Ship{
 
     }
     public void tick(){
-        location.x += velX; // we need to make it move in the direction it is pointing.
-        location.y += velY;
+
         if(isRotatingLeft)
         {
-            angle -= Math.toRadians(5);
+            angle -= Math.toRadians(angle_modifier);
             if (angle <= Math.toRadians(-360)){
-                angle = 0;
+                angle +=Math.toRadians(360);
             }
         }
         else if (isRotatingRight){
-            angle += Math.toRadians(5);
-            if (angle >= Math.toRadians(358)){
-                angle = 0;
+            angle += Math.toRadians(angle_modifier);
+            if (angle > Math.toRadians(360)){
+                angle-=Math.toRadians(360);
             }
         }
+        if(isThrusting) {
+            velY = (int) (Math.cos(angle) * movement_speed)*(-1);
+            velX = (int) (Math.sin(angle) * movement_speed);
+        }
+
+        location.x += velX;
+        location.y += velY;
+
+        //braking
+        velX *= 0.9999999;
+        velY *= 0.9999999;
         System.out.println("Angle: " + Math.toDegrees(angle));
 
     }
     public void move(KeyEvent e){
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {
-            velY = -1;
+            isThrusting = true;
         }
         if (key == KeyEvent.VK_DOWN) {
-            velY = 1;
+            velY = 1;   //TODO Braking or whatever not sure how's that supposed to work, up to you
         }
 
 
@@ -92,10 +106,10 @@ public class Ship{
     public void brake(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_UP) {
-            velY = 0;
+            isThrusting = false;
         }
         if (key == KeyEvent.VK_DOWN) {
-            velY = 0;
+            velY = 0;   //TODO
         }
         if (key == KeyEvent.VK_LEFT) {
             isRotatingLeft = false;
