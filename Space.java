@@ -4,10 +4,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Space extends JPanel implements KeyListener{
-    Ship player;
+    PlayerShip player;
+    AlienShip alien;
 
     public Space(){
-        player = new Ship(10,30,Color.red,new Point(400,300));
+        player = new PlayerShip(10,30,Color.red,new Point(640,512));
+        alien = new AlienShip(20,60, Color.black,new Point(200,200),0);
         this.setFocusable(true);
         this.requestFocus();
         this.addKeyListener(this);
@@ -17,6 +19,7 @@ public class Space extends JPanel implements KeyListener{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         player.paint(g);
+        alien.paint(g);
     }
 
     @Override
@@ -36,8 +39,11 @@ public class Space extends JPanel implements KeyListener{
         player.brake(e);
         this.repaint();
     }
-    public void tick(){
+    public void tick(){ //TODO: we need to clean up those method calls because when there will be more entities there will be mess (already is). We can throw every aliens into an array or smth
         player.tick();
+        alien.tick();
+        alien.move();
+        alien.rotate();
         this.repaint();
     }
 }

@@ -10,7 +10,7 @@ public class Game extends JFrame implements Runnable {
         super("Space");
         space = new Space();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1280, 1024);
         setContentPane(space);
         setVisible(true);
     }
