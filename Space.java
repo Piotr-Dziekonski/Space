@@ -7,7 +7,7 @@ public class Space extends JPanel implements KeyListener{
     Ship player;
 
     public Space(){
-        player = new Ship(40,40,Color.red,new Point(400,300));
+        player = new Ship(10,30,Color.red,new Point(400,300));
         this.setFocusable(true);
         this.requestFocus();
         this.addKeyListener(this);

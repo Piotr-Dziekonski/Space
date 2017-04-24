@@ -11,7 +11,7 @@ public class Ship{
 
     private double angle;
 
-    private int velX, velY;
+    private double velX, velY;
     private double acceleration;
     private double movement_speed;
     private double accel_modifier;
@@ -77,17 +77,19 @@ public class Ship{
             }
         }
         if(isThrusting) {
-            velY = (int) (Math.cos(angle) * movement_speed)*(-1);
-            velX = (int) (Math.sin(angle) * movement_speed);
+            velY = (Math.cos(angle) * movement_speed)*(-1);
+            velX = Math.sin(angle) * movement_speed;
         }
 
         location.setLocation(location.getX() + velX, location.getY() + velY);
 
         //braking
-        velX *= 0.9999999999999999;
-        velY *= 0.9999999999999999;
-        System.out.println("Velocity: " + velX + " " + velY);
-        System.out.println("Angle: " + Math.toDegrees(angle));
+
+        velX *= 0.97;
+        velY *= 0.97;
+
+        //System.out.println("Velocity: " + velX + " " + velY);
+        //System.out.println("Angle: " + Math.toDegrees(angle));
 
     }
     public void move(KeyEvent e){
