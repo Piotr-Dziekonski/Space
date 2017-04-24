@@ -1,11 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 
 public class Ship{
     private int height;
     private int width;
     private Color color;
-    private Point location;
+    private Point2D location;
 
     private double angle;
 
@@ -42,14 +44,21 @@ public class Ship{
     public void paint(Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
-        int xPoly[] = {this.location.x, this.location.x + width, this.location.x + (width/2)};
-        int yPoly[] = {this.location.y, this.location.y, this.location.y - height};
-        int xsum = (this.location.x + this.location.x + width + this.location.x + (width/2))/3;
-        int ysum = (this.location.y + this.location.y + this.location.y - height)/3;
-        Polygon triangle = new Polygon(xPoly, yPoly, xPoly.length);
+        double xPoly[] = {this.location.getX(), this.location.getX() + width, this.location.getX() + (width/2)};
+        double yPoly[] = {this.location.getY(), this.location.getY(), this.location.getY() - height};
+        double xsum = (this.location.getX() + this.location.getX() + width + this.location.getX() + (width/2))/3;
+        double ysum = (this.location.getY() + this.location.getY() + this.location.getY() - height)/3;
+        Path2D path = new Path2D.Double();
+
+        path.moveTo(xPoly[0], yPoly[0]);
+        for(int i = 1; i < xPoly.length; ++i) {
+            path.lineTo(xPoly[i], yPoly[i]);
+        }
+        path.closePath();
+
         g2d.rotate(angle,xsum,ysum);
         g2d.setColor(color);
-        g2d.drawPolygon(triangle);
+        g2d.draw(path);
 
     }
     public void tick(){
@@ -72,12 +81,12 @@ public class Ship{
             velX = (int) (Math.sin(angle) * movement_speed);
         }
 
-        location.x += velX;
-        location.y += velY;
+        location.setLocation(location.getX() + velX, location.getY() + velY);
 
         //braking
-        velX *= 0.9999999;
-        velY *= 0.9999999;
+        velX *= 0.9999999999999999;
+        velY *= 0.9999999999999999;
+        System.out.println("Velocity: " + velX + " " + velY);
         System.out.println("Angle: " + Math.toDegrees(angle));
 
     }
