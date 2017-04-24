@@ -2,47 +2,32 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
 
-public class Ship{
-    private int height;
-    private int width;
-    private Color color;
-    private Point2D.Double location;
+public class Ship extends GameObject{
+    private double height = 30;
+    private double width = 10;
+    private Color color = Color.red;
 
-    private double angle;
-
-    private double velX, velY;
-    private double acceleration;
-    private double movement_speed;
-    private double accel_modifier;
-    private double deceleration_multiplier;
     private double angle_modifier;
-    private boolean isRotatingLeft;
-    private boolean isRotatingRight;
-    private boolean isThrusting;
-
 
     public Ship(int width, int height, Color color, Point _location)
     {
-        this.isRotatingLeft = false;
-        this.isRotatingRight = false;
-        this.isThrusting = false;
-        this.velX = 0;
-        this.velY = 0;
-        this.angle = 0;
-        this.location = new Point2D.Double(_location.x,_location.y);
-        this.acceleration = 0;
-        this.movement_speed = 10;
-        this.accel_modifier = 0.5;
-        this.deceleration_multiplier = 1;
+        super(new Point2D.Double(300,400), ObjectId.Player);
+        setVelX(0);
+        setVelY(0);
+        setAngle(0);
+        location.setLocation(_location);
+        setMovementSpeed(10);
         this.height = height;
         this.width= width;
         this.color= color;
         this.angle_modifier = 5;
     }
-
-    public void paint(Graphics g)
+    @Override
+    public void render(Graphics g)
     {
+        g.setColor(color);
         Graphics2D g2d = (Graphics2D) g;
         double xPoly[] = {this.location.getX(), this.location.getX() + width, this.location.getX() + (width/2)};
         double yPoly[] = {this.location.getY(), this.location.getY(), this.location.getY() - height};
@@ -56,80 +41,43 @@ public class Ship{
         }
         path.closePath();
 
-        g2d.rotate(angle,xsum,ysum);
+        g2d.rotate(getAngle(),xsum,ysum);
         g2d.setColor(color);
         g2d.draw(path);
 
     }
-    public void tick(){
 
+    @Override
+    public void tick(LinkedList<GameObject> object) {
         if(isRotatingLeft)
         {
-            angle -= Math.toRadians(angle_modifier);
-            if (angle <= Math.toRadians(-360)){
-                angle +=Math.toRadians(360);
+            setAngle(getAngle()-Math.toRadians(angle_modifier));
+            if(getAngle()<=Math.toRadians(-360)){
+                setAngle(getAngle()+Math.toRadians(360));
             }
         }
         else if (isRotatingRight){
-            angle += Math.toRadians(angle_modifier);
-            if (angle > Math.toRadians(360)){
-                angle-=Math.toRadians(360);
+            setAngle(getAngle()+Math.toRadians(angle_modifier));
+            if(getAngle()>Math.toRadians(-360)){
+                setAngle(getAngle()-Math.toRadians(360));
             }
         }
         if(isThrusting) {
-            velY = (Math.cos(angle) * movement_speed)*(-1);
-            velX = Math.sin(angle) * movement_speed;
+            setVelY(Math.cos(getAngle()) * getMovementSpeed()*(-1));
+            setVelX(Math.sin(getAngle()) * getMovementSpeed());
         }
         else {//braking
-            velX *= 0.97;
-            velY *= 0.97;
+            setVelX(getVelX()*0.97);
+            setVelY(getVelY()*0.97);
         }
 
-        location.setLocation(location.getX() + velX, location.getY() + velY);
+        location.setLocation(location.getX() + getVelX(), location.getY() + getVelY());
 
-
-
-
-
-        //System.out.println("Velocity: " + velX + " " + velY);
-        System.out.println("Angle: " + Math.toDegrees(angle) + " " + angle);
-
-    }
-    public void move(KeyEvent e){
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) {
-            isThrusting = true;
-        }
-        if (key == KeyEvent.VK_DOWN) {
-            velY = 1;   //TODO Braking or whatever not sure how's that supposed to work, up to you
-        }
-
-
-    }
-    public void rotate(KeyEvent e){
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_LEFT) {
-            isRotatingLeft = true;
-        }
-        if (key == KeyEvent.VK_RIGHT) {
-            isRotatingRight = true;
-        }
-
+        System.out.println("x: " + getX() + " y: " + getY());
     }
 
-    public void brake(KeyEvent e) {
-        int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) {
-            isThrusting = false;
-        }
-        if (key == KeyEvent.VK_DOWN) {
-            velY = 0;   //TODO
-        }
-        if (key == KeyEvent.VK_LEFT) {
-            isRotatingLeft = false;
-        }
-        if (key == KeyEvent.VK_RIGHT) {
-            isRotatingRight = false;
-        }
+    @Override
+    public Rectangle getBounds() {
+        return null;
     }
 }

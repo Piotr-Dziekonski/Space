@@ -9,14 +9,14 @@ public class Space extends JPanel implements KeyListener{
     public Space(){
         player = new Ship(10,30,Color.red,new Point(400,300));
         this.setFocusable(true);
-        this.requestFocus();
+        //this.requestFocus();
         this.addKeyListener(this);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        player.paint(g);
+        player.render(g);
     }
 
     @Override
@@ -26,18 +26,18 @@ public class Space extends JPanel implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        player.move(e);
-        player.rotate(e); // sets player.isRotatingLeft or player.isRotatingRight to true depending on which button is pressed and then player.tick() makes it change its angle (player.angle)
+        //player.move(e);
+        //player.rotate(e); // sets player.isRotatingLeft or player.isRotatingRight to true depending on which button is pressed and then player.tick() makes it change its angle (player.angle)
         this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        player.brake(e);
+        //player.brake(e);
         this.repaint();
     }
     public void tick(){
-        player.tick();
+        //player.tick();
         this.repaint();
     }
 }

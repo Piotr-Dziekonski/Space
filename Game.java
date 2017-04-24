@@ -1,27 +1,52 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferStrategy;
 
-public class Game extends JFrame implements Runnable {
+public class Game extends Canvas implements Runnable {
 
-    Space space;
     private boolean running = false;
     private Thread thread;
+    Handler handler;
+    Camera cam;
+
+    private void init(){
+        handler = new Handler();
+        handler.addObject(new Ship(10,30,Color.red,new Point(400,300)));
+        this.addKeyListener(new KeyInput(handler));
+    }
 
     public Game() {
-        super("Space");
-        space = new Space();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cam = new Camera(0,0);
         setSize(800, 600);
-        setContentPane(space);
         setVisible(true);
     }
+    private void render(){
+        BufferStrategy bs = this.getBufferStrategy();
+        if(bs==null){
+            this.createBufferStrategy(3);
+            return;
+        }
+        Graphics g = bs.getDrawGraphics();
 
+
+        g.setColor(Color.black);
+        g.fillRect(0,0, getWidth(), getHeight());
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(cam.getX(), cam.getY());
+
+        handler.render(g);
+
+        g2d.translate(-cam.getX(), -cam.getY());
+
+        g.dispose();
+        bs.show();
+    }
     public static void main(String[] args) {
-
-        Game game = new Game();
-        game.start();
+        new Window(800,600,"Space", new Game());
 
     }
-    private synchronized void start(){
+    public synchronized void start(){
         if(running){
             return;
         }
@@ -43,7 +68,8 @@ public class Game extends JFrame implements Runnable {
     }
     @Override
     public void run() {
-
+        init();
+        this.requestFocus();
         long lastTime = System.nanoTime();
         final double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -61,6 +87,7 @@ public class Game extends JFrame implements Runnable {
                 updates++;
                 delta--;
             }
+            render();
             frames++;
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
@@ -76,6 +103,11 @@ public class Game extends JFrame implements Runnable {
     }
 
     private void tick() {
-        space.tick();
+        handler.tick();
+        for(GameObject x:handler.object){
+            if(x.getId() == ObjectId.Player){
+                cam.tick(x);
+            }
+        }
     }
 }
