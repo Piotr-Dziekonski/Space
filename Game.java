@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 
@@ -11,8 +13,10 @@ public class Game extends Canvas implements Runnable {
 
     private void init(){
         handler = new Handler();
-        handler.addObject(new Ship(10,30,Color.red,new Point(400,300)));
+        handler.addObject(new Ship(10,30,Color.red,new Point2D.Double(400,300)));
         this.addKeyListener(new KeyInput(handler));
+        handler.addObject(new Ship(20, 60, Color.blue, new Point2D.Double(500, 100)));
+        handler.addObject(new Asteroid(20, Color.ORANGE, new Point2D.Double(new Random().nextInt(800) + 1, new Random().nextInt(600) + 1)));
     }
 
     public Game() {

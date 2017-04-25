@@ -17,8 +17,8 @@ public abstract class GameObject {
 
     public GameObject(Point2D.Double location, ObjectId id){
         this.location = location;
-        this.x = x;
-        this.y = y;
+        this.x = location.x;
+        this.y = location.y;
         this.id = id;
     }
     public abstract void tick(LinkedList<GameObject> object);

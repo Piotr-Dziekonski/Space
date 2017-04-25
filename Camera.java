@@ -20,6 +20,6 @@ public class Camera {
         this.y = y;
     }
     public void tick(GameObject obj){
-        x--;
+        //x--;
     }
 }

@@ -12,13 +12,13 @@ public class Ship extends GameObject{
 
     private double angle_modifier;
 
-    public Ship(int width, int height, Color color, Point _location)
+    public Ship(int width, int height, Color color, Point2D.Double _location)
     {
-        super(new Point2D.Double(300,400), ObjectId.Player);
+        super(_location, ObjectId.Player);
         setVelX(0);
         setVelY(0);
         setAngle(0);
-        location.setLocation(_location);
+        this.location.setLocation(_location);
         setMovementSpeed(10);
         this.height = height;
         this.width= width;
@@ -46,7 +46,6 @@ public class Ship extends GameObject{
         double rotateAnchorY = (this.location.getY() + this.location.getY() + this.location.getY() - height)/3;
         AffineTransform at = AffineTransform.getRotateInstance(this.angle, rotateAnchorX, rotateAnchorY);       ////    This line create a rotation which is then used in creating
         Shape shape = path.createTransformedShape(at);                                                          ////    an already rotated actual shape in this line
-        g2d.setColor(this.color);
         g2d.draw(shape);                                                                                        ////    and then drawn here.
 
     }
@@ -77,7 +76,7 @@ public class Ship extends GameObject{
 
         location.setLocation(location.getX() + getVelX(), location.getY() + getVelY());
 
-        System.out.println("x: " + getX() + " y: " + getY());
+        //System.out.println("x: " + getX() + " y: " + getY());
     }
 
     @Override
