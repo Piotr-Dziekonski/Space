@@ -12,6 +12,7 @@ public abstract class GameObject {
     protected boolean isThrusting=false;
     protected boolean isRotatingLeft = false;
     protected boolean isRotatingRight = false;
+    public boolean isFiring;
     protected double angle;
     protected double movement_speed;
 

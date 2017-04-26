@@ -12,6 +12,9 @@ public class KeyInput extends KeyAdapter {
 
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
+        if (e.getKeyChar() == 27) {
+            System.exit(0);
+        }
         for(GameObject tmp: handler.object){
             GameObject tmpObject = tmp;
             if(tmpObject.getId() == ObjectId.Player){
@@ -23,6 +26,9 @@ public class KeyInput extends KeyAdapter {
                 }
                 if (key == KeyEvent.VK_RIGHT) {
                     tmpObject.isRotatingRight = true;
+                }
+                if (key == KeyEvent.VK_SPACE) {
+                    tmpObject.isFiring = true;
                 }
             }
         }
@@ -40,6 +46,9 @@ public class KeyInput extends KeyAdapter {
                 }
                 if (key == KeyEvent.VK_RIGHT) {
                     tmpObject.isRotatingRight = false;
+                }
+                if (key == KeyEvent.VK_SPACE) {
+                    tmpObject.isFiring = false;
                 }
             }
         }

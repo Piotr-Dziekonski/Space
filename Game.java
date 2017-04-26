@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 
+    public static int width = 800;
+    public static int height = 600;
     private boolean running = false;
     private Thread thread;
     Handler handler;
@@ -17,11 +19,12 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(new KeyInput(handler));
         handler.addObject(new Ship(20, 60, Color.blue, new Point2D.Double(500, 100)));
         handler.addObject(new Asteroid(20, Color.ORANGE, new Point2D.Double(new Random().nextInt(800) + 1, new Random().nextInt(600) + 1)));
+        handler.addWeapon(new LaserGun(20,10,1000));
     }
 
     public Game() {
         cam = new Camera(0,0);
-        setSize(800, 600);
+        setSize(width, height);
         setVisible(true);
     }
     private void render(){
@@ -47,7 +50,7 @@ public class Game extends Canvas implements Runnable {
         bs.show();
     }
     public static void main(String[] args) {
-        new Window(800,600,"Space", new Game());
+        new Window(width,height,"Space", new Game());
 
     }
     public synchronized void start(){
