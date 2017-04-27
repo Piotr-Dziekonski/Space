@@ -4,6 +4,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
+import java.util.Vector;
 
 public class Ship extends GameObject{
     private double height = 30;
@@ -15,7 +16,7 @@ public class Ship extends GameObject{
     private double accel_modifier;
     private double angle_modifier;
     private Weapon weapon;
-
+    private Vector<Projectile> projectiles = new Vector<>();
 
 
     public Ship(int width, int height, Color color, Point2D.Double _location)
@@ -59,12 +60,21 @@ public class Ship extends GameObject{
         Shape shape = path.createTransformedShape(at);                                                          ////    an already rotated actual shape in this line
         g2d.draw(shape);                                                                                        ////    and then drawn here.
 
+        for (Projectile projectile : projectiles)
+        {
+            projectile.render(g);
+        }
+
+
     }
 
     @Override
     public void tick(LinkedList<GameObject> object) {
         if(isFiring){
-            tryToFire();
+            if (!(System.currentTimeMillis() - lastFire < weapon.getFire_interval())) {
+                lastFire = System.currentTimeMillis();
+                projectiles.add(new Projectile(ProjectileId.Bullet, 10));
+            }
         }
         if(isRotatingLeft) {
             setAngle(getAngle()-Math.toRadians(angle_modifier));
@@ -89,6 +99,11 @@ public class Ship extends GameObject{
 
         location.setLocation(location.getX() + getVelX(), location.getY() + getVelY());
 
+        for (Projectile projectile : projectiles)
+        {
+            projectile.tick();
+        }
+
         //System.out.println("x: " + getX() + " y: " + getY());
     }
 
@@ -98,7 +113,7 @@ public class Ship extends GameObject{
         }
 
         lastFire = System.currentTimeMillis();
-        weapon.shoot();
+        projectiles.add(new Projectile(ProjectileId.Bullet, 10));
         //GameObject shot = new (this,"sprites/shot.gif",this.location.getX()+10,this.location.getY()-30);
         //entities.add(shot);
     }

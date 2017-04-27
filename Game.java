@@ -17,9 +17,10 @@ public class Game extends Canvas implements Runnable {
         handler = new Handler();
         handler.addObject(new Ship(10,30,Color.red,new Point2D.Double(400,300)));
         this.addKeyListener(new KeyInput(handler));
-        handler.addObject(new Ship(20, 60, Color.blue, new Point2D.Double(500, 100)));
+        //handler.addObject(new Ship(20, 60, Color.blue, new Point2D.Double(500, 100)));
         handler.addObject(new Asteroid(20, Color.ORANGE, new Point2D.Double(new Random().nextInt(800) + 1, new Random().nextInt(600) + 1)));
         handler.addWeapon(new LaserGun(20,10,1000));
+        handler.addProjectile(new Projectile(ProjectileId.Bullet, 10)); //TODO: this method needs to be accessed from LaserGun.java somehow. LaserGun needs to be able to add new projectiles to the handler.
     }
 
     public Game() {

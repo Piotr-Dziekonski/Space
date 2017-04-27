@@ -2,6 +2,8 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class LaserGun extends Weapon {
+    Projectile p;
+
     public LaserGun(int damage, double projectile_speed, int fire_interval) {
         super(WeaponId.LaserGun, damage, projectile_speed, fire_interval);
     }
@@ -13,11 +15,13 @@ public class LaserGun extends Weapon {
 
     @Override
     public void render(Graphics g) {
-        shoot();
+
     }
 
     @Override
     public void shoot() {
-        new Projectile(ProjectileId.Bullet, this.getProjectile_speed());
+        p = new Projectile(ProjectileId.Bullet, this.getProjectile_speed());
+        //System.out.println("pew");
+
     }
 }

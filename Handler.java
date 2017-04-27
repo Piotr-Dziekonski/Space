@@ -24,7 +24,7 @@ public class Handler {
         }
         for(Projectile tmp:projectile){
             tmpProjectile = tmp;
-            tmpProjectile.tick(projectile);
+            tmpProjectile.tick();
 
         }
     }
@@ -53,6 +53,12 @@ public class Handler {
     }
     public void removeWeapon(Weapon weapon){
         this.weapon.remove(weapon);
+    }
+    public void addProjectile(Projectile projectile){
+        this.projectile.add(projectile);
+    }
+    public void removeProjectile(Projectile projectile){
+        this.projectile.remove(projectile);
     }
 
 }
