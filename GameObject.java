@@ -34,6 +34,9 @@ public abstract class GameObject {
     public double getMovementSpeed(){
         return this.movement_speed;
     }
+    public Point2D.Double getLocation(){
+        return this.location;
+    }
     public double getX(){
         return this.location.getX();
     }

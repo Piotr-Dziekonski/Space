@@ -32,7 +32,7 @@ public class Ship extends GameObject{
         this.color= color;
         this.angle_modifier = 5;
         this.accel_modifier = 0.02;
-        weapon = new LaserGun(20, 10, 1000);
+        weapon = new LaserGun(20, 3, 500);
     }
     @Override
     public void render(Graphics g)
@@ -60,9 +60,14 @@ public class Ship extends GameObject{
         Shape shape = path.createTransformedShape(at);                                                          ////    an already rotated actual shape in this line
         g2d.draw(shape);                                                                                        ////    and then drawn here.
 
-        for (Projectile projectile : projectiles)
+        for (Projectile projectile : projectiles)   //TODO: This needs to somehow be in the handler class I think
         {
-            projectile.render(g);
+                if((projectile.getLocation().getX() < 0 || projectile.getLocation().getY() < 0) || (projectile.getLocation().getX() > Game.width || projectile.getLocation().getY() > Game.height)){
+                    projectile = null;
+                }
+                else{
+                    projectile.render(g);
+                }
         }
 
 
@@ -73,7 +78,8 @@ public class Ship extends GameObject{
         if(isFiring){
             if (!(System.currentTimeMillis() - lastFire < weapon.getFire_interval())) {
                 lastFire = System.currentTimeMillis();
-                projectiles.add(new Projectile(ProjectileId.Bullet, 10));
+                projectiles.add(weapon.shoot(getAngle(), new Point2D.Double(this.getX()+ (width / 2), this.getY() - height))); //TODO: The point needs to be calculated better so it would spawn the projectiles in front of the ship ( now it spawns them near the ship )
+
             }
         }
         if(isRotatingLeft) {
@@ -99,23 +105,12 @@ public class Ship extends GameObject{
 
         location.setLocation(location.getX() + getVelX(), location.getY() + getVelY());
 
-        for (Projectile projectile : projectiles)
+        for (Projectile projectile : projectiles) //TODO: This needs to somehow be in the handler class I think
         {
             projectile.tick();
         }
 
         //System.out.println("x: " + getX() + " y: " + getY());
-    }
-
-    private void tryToFire() {
-        if (System.currentTimeMillis() - lastFire < weapon.getFire_interval()) {
-            return;
-        }
-
-        lastFire = System.currentTimeMillis();
-        projectiles.add(new Projectile(ProjectileId.Bullet, 10));
-        //GameObject shot = new (this,"sprites/shot.gif",this.location.getX()+10,this.location.getY()-30);
-        //entities.add(shot);
     }
 
     @Override

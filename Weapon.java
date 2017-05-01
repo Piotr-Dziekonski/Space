@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 
 public abstract class Weapon {
@@ -17,7 +18,7 @@ public abstract class Weapon {
 
     public abstract void tick(LinkedList<Weapon> weapon);
     public abstract void render(Graphics g);
-    public abstract void shoot();
+    public abstract Projectile shoot(double angle, Point2D.Double location);
     public WeaponId getWeaponId() {
         return weaponId;
     }

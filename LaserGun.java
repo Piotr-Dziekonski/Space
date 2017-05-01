@@ -1,8 +1,9 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 
 public class LaserGun extends Weapon {
-    Projectile p;
+
 
     public LaserGun(int damage, double projectile_speed, int fire_interval) {
         super(WeaponId.LaserGun, damage, projectile_speed, fire_interval);
@@ -19,8 +20,8 @@ public class LaserGun extends Weapon {
     }
 
     @Override
-    public void shoot() {
-        p = new Projectile(ProjectileId.Bullet, this.getProjectile_speed());
+    public Projectile shoot(double angle, Point2D.Double location) {
+        return new Projectile(ProjectileId.Bullet, this.getProjectile_speed(), angle, location);
         //System.out.println("pew");
 
     }

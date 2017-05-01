@@ -9,21 +9,17 @@ public class Projectile {
     private double projectile_speed;
     private double angle;
     private Point2D.Double location;
-    private double velX=2, velY=2;
+    private double velX, velY;
 
 
-    public Projectile(ProjectileId projectileId, double projectile_speed) {
+    public Projectile(ProjectileId projectileId, double projectile_speed, double angle, Point2D.Double location) {
+        this.angle = angle;
         this.projectileId = projectileId;
         this.projectile_speed = projectile_speed;
-        this.location = new Point2D.Double(50,50);
+        this.location = location;
 
     }
     public void render(Graphics g){
-        if(this.location.getX() < 0) {this.location.x = 0; velX = 0;}                                                   ///
-        if(this.location.getY() < 15) {this.location.y = 15; velY = 0;}                                                 /// All this is temporary. It's here just to prevent ship
-        if(this.location.getX() > Game.width) {this.location.x = Game.width; velX = 0;}                                 /// flying off the screen.
-        if(this.location.getY() > Game.height + 15) {this.location.y = Game.height + 15; velY = 0;}                     ///
-
         g.setColor(Color.RED);
         Graphics2D g2d = (Graphics2D) g;
 
@@ -37,12 +33,18 @@ public class Projectile {
 
         double rotateAnchorX = (this.location.getX() + this.location.getX() + 10) /2;
         double rotateAnchorY = (this.location.getY() + this.location.getY() + 10) /2;
-        AffineTransform at = AffineTransform.getRotateInstance(this.angle, rotateAnchorX, rotateAnchorY);       ////    This line creates a rotation which is then used in creating
+        AffineTransform at = AffineTransform.getRotateInstance(this.angle + Math.toRadians(45), rotateAnchorX, rotateAnchorY);       ////    This line creates a rotation which is then used in creating
         Shape shape = path.createTransformedShape(at);                                                          ////    an already rotated actual shape in this line
         g2d.draw(shape);
 
     }
     public void tick(){
+        this.velY = this.velY + Math.cos(angle) * this.projectile_speed * (-1);
+        this.velX = this.velX + Math.sin(angle) * this.projectile_speed;
         location.setLocation(location.getX() + velX, location.getY() + velY);
+    }
+
+    public Point2D.Double getLocation() {
+        return location;
     }
 }
