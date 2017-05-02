@@ -12,6 +12,8 @@ public class Ship extends GameObject{
     private Color color = Color.red;
     private int firingInterval = 1000;
     private long lastFire;
+    private double rotateAnchorX;
+    private double rotateAnchorY;
 
     private double accel_modifier;
     private double angle_modifier;
@@ -32,7 +34,7 @@ public class Ship extends GameObject{
         this.color= color;
         this.angle_modifier = 5;
         this.accel_modifier = 0.02;
-        weapon = new LaserGun(20, 3, 500);
+        weapon = new LaserGun(20, 20, 200);
     }
     @Override
     public void render(Graphics g)
@@ -54,20 +56,20 @@ public class Ship extends GameObject{
         }
         path.closePath();
 
-        double rotateAnchorX = (this.location.getX() + this.location.getX() + width + this.location.getX() + (width/2))/3;
-        double rotateAnchorY = (this.location.getY() + this.location.getY() + this.location.getY() - height)/3;
-        AffineTransform at = AffineTransform.getRotateInstance(this.angle, rotateAnchorX, rotateAnchorY);       ////    This line creates a rotation which is then used in creating
+        this.rotateAnchorX = (this.location.getX() + this.location.getX() + width + this.location.getX() + (width/2))/3;
+        this.rotateAnchorY = (this.location.getY() + this.location.getY() + this.location.getY() - height)/3;
+
+        AffineTransform at = AffineTransform.getRotateInstance(this.angle, this.rotateAnchorX, this.rotateAnchorY);       ////    This line creates a rotation which is then used in creating
         Shape shape = path.createTransformedShape(at);                                                          ////    an already rotated actual shape in this line
         g2d.draw(shape);                                                                                        ////    and then drawn here.
 
-        for (Projectile projectile : projectiles)   //TODO: This needs to somehow be in the handler class I think
+        for (int x = projectiles.size() - 1; x >= 0; x--)   //TODO: This needs to somehow be in the handler class I think
         {
-                if((projectile.getLocation().getX() < 0 || projectile.getLocation().getY() < 0) || (projectile.getLocation().getX() > Game.width || projectile.getLocation().getY() > Game.height)){
-                    projectile = null;
-                }
-                else{
-                    projectile.render(g);
-                }
+            Projectile projectile = projectiles.elementAt(x);
+            projectile.render(g);
+            if((projectile.getProjectileBounds2D().getX() < 0 || projectile.getProjectileBounds2D().getY() < 0) || (projectile.getProjectileBounds2D().getX() > Game.width || projectile.getProjectileBounds2D().getY() > Game.height)){
+                projectiles.remove(projectile); /// removes the projectile if it went out of screen
+            }
         }
 
 
@@ -78,7 +80,7 @@ public class Ship extends GameObject{
         if(isFiring){
             if (!(System.currentTimeMillis() - lastFire < weapon.getFire_interval())) {
                 lastFire = System.currentTimeMillis();
-                projectiles.add(weapon.shoot(getAngle(), new Point2D.Double(this.getX()+ (width / 2), this.getY() - height))); //TODO: The point needs to be calculated better so it would spawn the projectiles in front of the ship ( now it spawns them near the ship )
+                projectiles.add(weapon.shoot(getAngle(), rotateAnchorX, rotateAnchorY, new Point2D.Double(this.getX()+ (width / 2), this.getY() - height)));
 
             }
         }

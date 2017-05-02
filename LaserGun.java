@@ -20,8 +20,8 @@ public class LaserGun extends Weapon {
     }
 
     @Override
-    public Projectile shoot(double angle, Point2D.Double location) {
-        return new Projectile(ProjectileId.Bullet, this.getProjectile_speed(), angle, location);
+    public Projectile shoot(double angle, double rotateAnchorX, double rotateAnchorY, Point2D.Double location) {
+        return new Projectile(ProjectileId.Bullet, rotateAnchorX, rotateAnchorY, this.getProjectile_speed(), angle, location);
         //System.out.println("pew");
 
     }

@@ -18,7 +18,7 @@ public abstract class Weapon {
 
     public abstract void tick(LinkedList<Weapon> weapon);
     public abstract void render(Graphics g);
-    public abstract Projectile shoot(double angle, Point2D.Double location);
+    public abstract Projectile shoot(double angle, double rotateAnchorX, double rotateAnchorY, Point2D.Double location);
     public WeaponId getWeaponId() {
         return weaponId;
     }
